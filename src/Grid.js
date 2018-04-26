@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 
 const DebugCol = styled.div`
     position: absolute;
@@ -15,10 +15,14 @@ const DebugCol = styled.div`
 
 class Grid extends Component {
     getChildContext() {
+        const nested = {};
+        Object.keys(this.props.theme.breakpoints).forEach(i => {
+            nested[i] = this.props.columns;
+        });
         return {
             grid: {
                 columns: this.props.columns,
-                nested: this.props.columns,
+                nested: nested,
                 hasGutter: false,
                 gutter: this.props.gutter,
                 debug: this.props.debug
@@ -49,4 +53,4 @@ Grid.propTypes = {
     debug: PropTypes.bool
 };
 
-export default Grid;
+export default withTheme(Grid);
